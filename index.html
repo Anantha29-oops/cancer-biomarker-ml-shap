@@ -1,0 +1,2282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Cancer Biomarker AI</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        /* ================================
+           HEADER
+           ================================ */
+
+        header {
+            background: white;
+            border-bottom: 1px solid #e5eaf1;
+            padding: 18px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: 700;
+        }
+
+        .badge {
+            background: #edf3ff;
+            color: #2463c5;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        /* ================================
+           MAIN
+           ================================ */
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px 24px 60px;
+        }
+
+
+        /* ================================
+           PROFESSIONAL V2 POLISH
+           ================================ */
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #5d6b80;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #2463c5;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            margin-bottom: 14px;
+            padding: 7px 13px;
+            border-radius: 20px;
+            background: #edf3ff;
+            color: #2463c5;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .3px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 24px 0;
+        }
+
+        .stat-box {
+            background: white;
+            border: 1px solid #e3e9f1;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 18px rgba(30, 50, 80, .04);
+        }
+
+        .stat-number {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .stat-label {
+            margin-top: 6px;
+            color: #758197;
+            font-size: 12px;
+        }
+
+        .workflow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .workflow-step {
+            min-width: 118px;
+            padding: 13px 12px;
+            background: #f8fafc;
+            border: 1px solid #e3e9f1;
+            border-radius: 11px;
+            text-align: center;
+        }
+
+        .workflow-step strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .workflow-step span {
+            display: block;
+            margin-top: 4px;
+            color: #7a8799;
+            font-size: 11px;
+        }
+
+        .workflow-arrow {
+            color: #9aa8ba;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .file-status {
+            display: none;
+            margin-top: 12px;
+            color: #526d9b;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* ================================
+           HERO
+           ================================ */
+
+        .hero {
+            background: white;
+            border: 1px solid #e3e9f1;
+            border-radius: 20px;
+            padding: 45px 30px;
+            text-align: center;
+
+            box-shadow:
+                0 8px 30px rgba(30, 50, 80, 0.06);
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: 42px;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            margin: 16px auto 0;
+            max-width: 800px;
+            color: #60708a;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+
+        /* ================================
+           CARD
+           ================================ */
+
+        .card {
+            background: white;
+            border: 1px solid #e3e9f1;
+            border-radius: 18px;
+            padding: 28px;
+            margin-top: 24px;
+
+            box-shadow:
+                0 7px 25px rgba(30, 50, 80, 0.05);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+
+        .description {
+            color: #68778e;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+
+        /* ================================
+           UPLOAD
+           ================================ */
+
+        .upload-area {
+            margin-top: 22px;
+            padding: 40px 20px;
+
+            border: 2px dashed #b8c8dc;
+            border-radius: 16px;
+
+            background: #f9fbfd;
+            text-align: center;
+        }
+
+        .upload-icon {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .upload-area h3 {
+            margin: 5px 0;
+        }
+
+        .upload-area p {
+            color: #7a8799;
+            font-size: 13px;
+        }
+
+        input[type="file"] {
+            margin-top: 15px;
+        }
+
+        .analyze-btn {
+            margin-top: 20px;
+            padding: 13px 28px;
+
+            border: none;
+            border-radius: 9px;
+
+            background: #172033;
+            color: white;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .analyze-btn:hover {
+            background: #2c3c59;
+        }
+
+
+        /* ================================
+           LOADING
+           ================================ */
+
+        #loading {
+            display: none;
+            margin-top: 18px;
+            color: #526d9b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        /* ================================
+           ERROR
+           ================================ */
+
+        #error {
+            display: none;
+
+            margin-top: 18px;
+            padding: 14px;
+
+            border-radius: 10px;
+
+            background: #fff1f1;
+            border: 1px solid #f0caca;
+
+            color: #a83232;
+
+            font-size: 13px;
+        }
+
+
+        /* ================================
+           RESULT
+           ================================ */
+
+        #resultSection {
+            display: none;
+        }
+
+        .result-card {
+            text-align: center;
+        }
+
+        .result-label {
+            color: #6b7789;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .prediction-result {
+            margin-top: 8px;
+            font-size: 38px;
+            font-weight: 800;
+        }
+
+        .normal-result {
+            color: #188653;
+        }
+
+        .cancer-result {
+            color: #c53c3c;
+        }
+
+        .genes-count {
+            margin-top: 12px;
+            color: #69778b;
+            font-size: 13px;
+        }
+
+
+        /* ================================
+           PROBABILITY
+           ================================ */
+
+        .probability-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-top: 25px;
+        }
+
+        .probability-card {
+            padding: 20px;
+
+            background: #f9fbfd;
+            border: 1px solid #e3e9f1;
+
+            border-radius: 14px;
+
+            text-align: left;
+        }
+
+        .probability-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .probability-header span {
+            color: #657389;
+            font-size: 13px;
+        }
+
+        .probability-header strong {
+            font-size: 21px;
+        }
+
+        .probability-bar {
+            width: 100%;
+            height: 10px;
+
+            margin-top: 14px;
+
+            background: #e7edf4;
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .probability-fill {
+            height: 100%;
+            width: 0%;
+
+            border-radius: 20px;
+
+            transition: width 0.8s ease;
+        }
+
+        .cancer-fill {
+            background: #d65353;
+        }
+
+        .normal-fill {
+            background: #319b69;
+        }
+
+
+        /* ================================
+           SHAP
+           ================================ */
+
+        .shap-intro {
+            color: #68778e;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .chart-container {
+            position: relative;
+
+            width: 100%;
+            height: 440px;
+
+            margin-top: 22px;
+
+            padding: 15px;
+
+            background: #fafcff;
+
+            border: 1px solid #e7edf4;
+
+            border-radius: 14px;
+        }
+
+
+        /* ================================
+           TABLE
+           ================================ */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .shap-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+
+            font-size: 13px;
+        }
+
+        .shap-table th {
+            padding: 13px;
+
+            text-align: left;
+
+            background: #f2f5f9;
+
+            color: #526176;
+
+            font-weight: 600;
+        }
+
+        .shap-table td {
+            padding: 13px;
+
+            border-bottom: 1px solid #edf1f5;
+        }
+
+        .shap-table tr:hover {
+            background: #f9fbfd;
+        }
+
+        .normal-text {
+            color: #188653;
+            font-weight: 600;
+        }
+
+        .cancer-text {
+            color: #c53c3c;
+            font-weight: 600;
+        }
+
+
+        /* ================================
+           MODEL INFO
+           ================================ */
+
+        .info-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+
+            margin-top: 22px;
+        }
+
+        .info-box {
+            padding: 20px;
+
+            background: #f8fafc;
+
+            border: 1px solid #e5eaf1;
+
+            border-radius: 13px;
+        }
+
+        .info-label {
+            color: #758197;
+            font-size: 12px;
+        }
+
+        .info-value {
+            margin-top: 8px;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        /* ================================
+           UPLOAD BUTTONS
+           ================================ */
+
+        .upload-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .upload-buttons .analyze-btn {
+            margin-top: 0;
+        }
+
+        .sample-btn {
+            display: inline-block;
+            padding: 12px 22px;
+            border: 1px solid #cbd6e4;
+            border-radius: 9px;
+            background: white;
+            color: #172033;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .sample-btn:hover {
+            background: #f2f5f9;
+            border-color: #aebdd0;
+        }
+
+
+        /* ================================
+           ABOUT PROJECT
+           ================================ */
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 25px;
+            margin-top: 22px;
+        }
+
+        .about-text {
+            color: #68778e;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .about-points {
+            display: grid;
+            gap: 12px;
+        }
+
+        .about-point {
+            padding: 15px;
+            background: #f8fafc;
+            border: 1px solid #e5eaf1;
+            border-radius: 12px;
+        }
+
+        .about-point strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .about-point span {
+            color: #718096;
+            font-size: 13px;
+        }
+
+
+        /* ================================
+           MODEL PERFORMANCE
+           ================================ */
+
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 22px;
+            font-size: 13px;
+        }
+
+        .performance-table th {
+            padding: 13px;
+            text-align: left;
+            background: #f2f5f9;
+            color: #526176;
+            font-weight: 600;
+        }
+
+        .performance-table td {
+            padding: 13px;
+            border-bottom: 1px solid #edf1f5;
+        }
+
+        .performance-table tr:hover {
+            background: #f9fbfd;
+        }
+
+        .performance-note {
+            margin-top: 15px;
+            color: #8994a5;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* ================================
+           CANDIDATE BIOMARKER GENES
+           ================================ */
+
+        .candidate-intro {
+            color: #68778e;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .candidate-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 22px;
+            font-size: 13px;
+        }
+
+        .candidate-table th {
+            padding: 13px;
+            text-align: left;
+            background: #f2f5f9;
+            color: #526176;
+            font-weight: 600;
+        }
+
+        .candidate-table td {
+            padding: 13px;
+            border-bottom: 1px solid #edf1f5;
+        }
+
+        .candidate-table tr:hover {
+            background: #f9fbfd;
+        }
+
+        .rank-badge {
+            display: inline-flex;
+            width: 30px;
+            height: 30px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #edf3ff;
+            color: #2463c5;
+            font-weight: 700;
+        }
+
+        .shap-value {
+            font-weight: 700;
+        }
+
+        .candidate-note {
+            margin-top: 15px;
+            color: #8994a5;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+
+        /* ================================
+           DETAILED GENE EXPLANATION
+           ================================ */
+
+        .gene-explanation-section {
+            margin-top: 26px;
+        }
+
+        .gene-explanation-intro {
+            color: #68778e;
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .gene-explanation-grid {
+            display: grid;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .gene-explanation-card {
+            background: #fbfcfe;
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .gene-explanation-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .gene-title {
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .gene-id {
+            margin-top: 5px;
+            color: #8994a5;
+            font-size: 11px;
+            font-family: Consolas, monospace;
+        }
+
+        .gene-direction {
+            flex-shrink: 0;
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .gene-direction.cancer {
+            background: #fff0f0;
+            color: #c53c3c;
+        }
+
+        .gene-direction.normal {
+            background: #edf9f2;
+            color: #188653;
+        }
+
+        .gene-direction.neutral {
+            background: #f1f4f8;
+            color: #657389;
+        }
+
+        .gene-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 15px;
+        }
+
+        .gene-metric {
+            padding: 7px 10px;
+            background: white;
+            border: 1px solid #e4e9f0;
+            border-radius: 8px;
+            color: #5d6b80;
+            font-size: 11px;
+        }
+
+        .gene-metric strong {
+            color: #172033;
+        }
+
+        .explanation-blocks {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .explanation-block {
+            padding: 14px;
+            background: white;
+            border: 1px solid #e7ebf1;
+            border-radius: 11px;
+        }
+
+        .explanation-block strong {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 12px;
+            color: #34445b;
+        }
+
+        .explanation-block p {
+            margin: 0;
+            color: #69778b;
+            font-size: 12px;
+            line-height: 1.65;
+        }
+
+        .biomarker-note {
+            margin-top: 12px;
+            padding: 11px 13px;
+            border-left: 3px solid #9db4d4;
+            background: #f5f8fc;
+            color: #66758a;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 800px) {
+            .explanation-blocks {
+                grid-template-columns: 1fr;
+            }
+
+            .gene-explanation-header {
+                flex-direction: column;
+            }
+        }
+
+        /* ================================
+           DISCLAIMER
+           ================================ */
+
+        .disclaimer {
+            margin-top: 24px;
+
+            padding: 16px 18px;
+
+            border-radius: 11px;
+
+            background: #fff9e9;
+
+            border: 1px solid #efdfb0;
+
+            color: #6d5922;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        /* ================================
+           FOOTER
+           ================================ */
+
+        footer {
+            text-align: center;
+
+            padding: 25px;
+
+            color: #8994a5;
+
+            font-size: 12px;
+        }
+
+
+        /* ================================
+           MOBILE
+           ================================ */
+
+        @media (max-width: 800px) {
+
+            header {
+                padding: 16px 20px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .probability-container {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .performance-table {
+                min-width: 650px;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     HEADER
+     ========================================= -->
+
+<header>
+
+    <div class="brand">
+        🧬 Cancer Biomarker AI
+    </div>
+
+    <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#performance">Performance</a>
+        <a href="#candidates">Candidate Genes</a>
+        <div class="badge">
+            XGBoost + SHAP
+        </div>
+    </div>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- =========================================
+         HERO
+         ========================================= -->
+
+    <section class="hero">
+
+        <div class="hero-badge">
+            AI-BASED BIOINFORMATICS RESEARCH
+        </div>
+
+        <h1>
+            Cancer Biomarker Discovery
+        </h1>
+
+        <p>
+            Machine Learning based cancer classification
+            using TCGA and GTEx RNA-seq data with
+            SHAP-based feature interpretation.
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================================
+         PROJECT STATISTICS
+         ========================================= -->
+
+    <section class="stats-grid">
+
+        <div class="stat-box">
+            <div class="stat-number">4,372</div>
+            <div class="stat-label">Balanced Samples</div>
+        </div>
+
+        <div class="stat-box">
+            <div class="stat-number">37,978</div>
+            <div class="stat-label">Gene Features</div>
+        </div>
+
+        <div class="stat-box">
+            <div class="stat-number">2,000</div>
+            <div class="stat-label">Selected Genes</div>
+        </div>
+
+        <div class="stat-box">
+            <div class="stat-number">4</div>
+            <div class="stat-label">ML Models</div>
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         UPLOAD
+         ========================================= -->
+
+
+
+    <section class="card">
+
+        <h2>
+            Upload Gene Expression Data
+        </h2>
+
+        <p class="description">
+
+            Upload a CSV file containing the
+            2,000 selected gene-expression features
+            used by the trained XGBoost model.
+
+        </p>
+
+
+        <div class="upload-area">
+
+            <div class="upload-icon">
+                📁
+            </div>
+
+            <h3>
+                Select your RNA-seq sample
+            </h3>
+
+            <p>
+                CSV format • 2,000 selected genes
+            </p>
+
+            <input
+                type="file"
+                id="fileInput"
+                accept=".csv"
+                onchange="showSelectedFile()"
+            >
+
+            <div id="fileStatus" class="file-status"></div>
+
+            <div class="upload-buttons">
+
+                <button
+                    class="analyze-btn"
+                    onclick="analyzeSample()">
+
+                    Analyze Sample
+
+                </button>
+
+                <a
+                    href="/download-sample"
+                    class="sample-btn">
+
+                    ↓ Download Sample CSV
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div id="loading">
+            🔄 Analyzing gene-expression data...
+        </div>
+
+
+        <div id="error"></div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         RESULT SECTION
+         ========================================= -->
+
+    <div id="resultSection">
+
+
+        <!-- Prediction -->
+
+        <section class="card result-card">
+
+            <div class="result-label">
+                Prediction Result
+            </div>
+
+            <div
+                id="prediction"
+                class="prediction-result">
+
+                --
+
+            </div>
+
+            <div class="genes-count">
+
+                Genes analyzed:
+                <strong id="genesUsed">2000</strong>
+
+            </div>
+
+
+            <!-- Probability -->
+
+            <div class="probability-container">
+
+
+                <div class="probability-card">
+
+                    <div class="probability-header">
+
+                        <span>
+                            Cancer Probability
+                        </span>
+
+                        <strong id="cancerProbability">
+                            0%
+                        </strong>
+
+                    </div>
+
+                    <div class="probability-bar">
+
+                        <div
+                            id="cancerBar"
+                            class="probability-fill cancer-fill">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="probability-card">
+
+                    <div class="probability-header">
+
+                        <span>
+                            Normal Probability
+                        </span>
+
+                        <strong id="normalProbability">
+                            0%
+                        </strong>
+
+                    </div>
+
+                    <div class="probability-bar">
+
+                        <div
+                            id="normalBar"
+                            class="probability-fill normal-fill">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             SHAP EXPLANATION
+             ========================================= -->
+
+        <section class="card">
+
+            <h2>
+                🧬 SHAP Explanation
+            </h2>
+
+            <p class="shap-intro">
+
+                SHAP explains which genes have the
+                strongest influence on the model's
+                prediction for this sample.
+
+                A positive SHAP value contributes
+                toward the cancer class, while a
+                negative value contributes toward
+                the normal class.
+
+            </p>
+
+
+            <!-- Chart -->
+
+            <div class="chart-container">
+
+                <canvas id="shapChart"></canvas>
+
+            </div>
+
+
+            <!-- Table -->
+
+            <div class="table-wrapper">
+
+                <table class="shap-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Gene
+                            </th>
+
+                            <th>
+                                SHAP Value
+                            </th>
+
+                            <th>
+                                Expression
+                            </th>
+
+                            <th>
+                                Contribution
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="shapTableBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+
+
+        <!-- =========================================
+             DETAILED GENE EXPLANATIONS
+             ========================================= -->
+
+        <section class="card gene-explanation-section">
+
+            <h2>
+                🔎 Detailed Gene Explanation
+            </h2>
+
+            <p class="gene-explanation-intro">
+                This section separates three different interpretations:
+                <strong>model explanation</strong> describes how the gene
+                affected this individual XGBoost prediction,
+                <strong>biological function</strong> gives general gene context,
+                and <strong>research context</strong> describes how cautiously
+                the result should be interpreted as a biomarker candidate.
+            </p>
+
+            <div id="geneExplanationGrid" class="gene-explanation-grid"></div>
+
+        </section>
+
+
+        <!-- =========================================
+             MODEL INFORMATION
+             ========================================= -->
+
+        <section class="card">
+
+            <h2>
+                Model Information
+            </h2>
+
+            <p class="description">
+
+                Technical details of the
+                cancer biomarker prediction system.
+
+            </p>
+
+
+            <div class="info-grid">
+
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Machine Learning Model
+                    </div>
+
+                    <div class="info-value">
+                        XGBoost
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Selected Features
+                    </div>
+
+                    <div class="info-value">
+                        2,000 Genes
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Training Data
+                    </div>
+
+                    <div class="info-value">
+                        TCGA + GTEx
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Explainability
+                    </div>
+
+                    <div class="info-value">
+                        SHAP
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             DISCLAIMER
+             ========================================= -->
+
+
+
+        <div class="disclaimer">
+
+            ⚠️ <strong>Research Use Only:</strong>
+
+            This system is developed for academic
+            and research purposes. The predictions
+            and SHAP-ranked genes are not intended
+            to be used as a clinical diagnosis or
+            medical decision-making tool.
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =========================================
+         PROJECT WORKFLOW
+         ========================================= -->
+
+    <section class="card">
+
+        <h2>🔬 Project Workflow</h2>
+
+        <p class="description">
+            Complete pipeline from RNA-seq data to interpretable
+            candidate biomarker identification.
+        </p>
+
+        <div class="workflow">
+
+            <div class="workflow-step">
+                <strong>TCGA + GTEx</strong>
+                <span>RNA-seq Data</span>
+            </div>
+
+            <div class="workflow-arrow">→</div>
+
+            <div class="workflow-step">
+                <strong>Preprocessing</strong>
+                <span>Data Preparation</span>
+            </div>
+
+            <div class="workflow-arrow">→</div>
+
+            <div class="workflow-step">
+                <strong>Feature Selection</strong>
+                <span>2,000 Genes</span>
+            </div>
+
+            <div class="workflow-arrow">→</div>
+
+            <div class="workflow-step">
+                <strong>ML Models</strong>
+                <span>Classification</span>
+            </div>
+
+            <div class="workflow-arrow">→</div>
+
+            <div class="workflow-step">
+                <strong>XGBoost</strong>
+                <span>Prediction</span>
+            </div>
+
+            <div class="workflow-arrow">→</div>
+
+            <div class="workflow-step">
+                <strong>SHAP</strong>
+                <span>Interpretation</span>
+            </div>
+
+            <div class="workflow-arrow">→</div>
+
+            <div class="workflow-step">
+                <strong>Candidate Genes</strong>
+                <span>Ranked Features</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         ABOUT THE PROJECT
+         ========================================= -->
+
+
+
+        <!-- =========================================
+             ABOUT THE PROJECT
+             ========================================= -->
+
+        <section class="card" id="about">
+
+            <h2>
+                🧬 About the Project
+            </h2>
+
+            <div class="about-grid">
+
+                <div>
+
+                    <p class="about-text">
+
+                        This project uses Machine Learning and
+                        Explainable AI to identify potential cancer
+                        biomarker candidates from RNA-seq gene
+                        expression data.
+
+                        TCGA cancer samples and GTEx normal tissue
+                        samples are processed and used to train
+                        classification models. Feature selection
+                        reduces the high-dimensional gene-expression
+                        data to the most informative 2,000 genes.
+
+                        XGBoost is used as the primary prediction model,
+                        while SHAP is used to explain which genes
+                        contribute most strongly to an individual
+                        prediction.
+
+                    </p>
+
+                </div>
+
+                <div class="about-points">
+
+                    <div class="about-point">
+                        <strong>📊 Dataset</strong>
+                        <span>TCGA + GTEx RNA-seq gene-expression data</span>
+                    </div>
+
+                    <div class="about-point">
+                        <strong>🤖 Prediction</strong>
+                        <span>XGBoost-based cancer classification</span>
+                    </div>
+
+                    <div class="about-point">
+                        <strong>🔍 Feature Selection</strong>
+                        <span>2,000 informative gene features</span>
+                    </div>
+
+                    <div class="about-point">
+                        <strong>💡 Explainability</strong>
+                        <span>SHAP-based interpretation of model predictions</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             MODEL PERFORMANCE
+             ========================================= -->
+
+        <section class="card" id="performance">
+
+            <h2>
+                📊 Model Performance
+            </h2>
+
+            <p class="description">
+                Held-out test-set performance of the machine learning models.
+            </p>
+
+            <div class="table-wrapper">
+
+                <table class="performance-table">
+
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Accuracy</th>
+                            <th>Precision</th>
+                            <th>Recall</th>
+                            <th>F1 Score</th>
+                            <th>ROC-AUC</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Logistic Regression</td>
+                            <td>100.00%</td>
+                            <td>100.00%</td>
+                            <td>100.00%</td>
+                            <td>100.00%</td>
+                            <td>1.0000</td>
+                        </tr>
+
+                        <tr>
+                            <td>Random Forest</td>
+                            <td>99.89%</td>
+                            <td>100.00%</td>
+                            <td>99.77%</td>
+                            <td>99.89%</td>
+                            <td>1.0000</td>
+                        </tr>
+
+                        <tr>
+                            <td>SVM</td>
+                            <td>100.00%</td>
+                            <td>100.00%</td>
+                            <td>100.00%</td>
+                            <td>100.00%</td>
+                            <td>1.0000</td>
+                        </tr>
+
+                        <tr>
+                            <td>XGBoost</td>
+                            <td>100.00%</td>
+                            <td>100.00%</td>
+                            <td>100.00%</td>
+                            <td>100.00%</td>
+                            <td>1.0000</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <p class="performance-note">
+                Results are from the current held-out test set and are
+                intended for research evaluation. They should not be
+                interpreted as clinical diagnostic accuracy.
+            </p>
+
+        </section>
+
+
+        <!-- =========================================
+             SHAP-RANKED CANDIDATE GENES
+             ========================================= -->
+
+        <section class="card" id="candidates">
+
+            <h2>
+                🧬 SHAP-Ranked Candidate Genes
+            </h2>
+
+            <p class="candidate-intro">
+                The following genes are the highest-ranked features from the
+                XGBoost model based on mean absolute SHAP importance across
+                the held-out test set. They are candidate biomarker genes
+                identified by the model and require independent biological
+                validation before being considered confirmed biomarkers.
+            </p>
+
+            <div class="table-wrapper">
+
+                <table class="candidate-table">
+
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Gene</th>
+                            <th>Ensembl ID</th>
+                            <th>Mean |SHAP|</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td><span class="rank-badge">1</span></td>
+                            <td><strong>Not mapped</strong></td>
+                            <td>ENSG00000219928</td>
+                            <td class="shap-value">1.494188</td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="rank-badge">2</span></td>
+                            <td><strong>MYH7</strong></td>
+                            <td>ENSG00000092054</td>
+                            <td class="shap-value">0.915103</td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="rank-badge">3</span></td>
+                            <td><strong>LENG8</strong></td>
+                            <td>ENSG00000167615</td>
+                            <td class="shap-value">0.618701</td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="rank-badge">4</span></td>
+                            <td><strong>Not mapped</strong></td>
+                            <td>ENSG00000281383</td>
+                            <td class="shap-value">0.474964</td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="rank-badge">5</span></td>
+                            <td><strong>GOLGA6L17P</strong></td>
+                            <td>ENSG00000277741</td>
+                            <td class="shap-value">0.453557</td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="rank-badge">6</span></td>
+                            <td><strong>MYL2</strong></td>
+                            <td>ENSG00000111245</td>
+                            <td class="shap-value">0.422170</td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="rank-badge">7</span></td>
+                            <td><strong>ABCA10</strong></td>
+                            <td>ENSG00000154263</td>
+                            <td class="shap-value">0.325213</td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="rank-badge">8</span></td>
+                            <td><strong>ACADVL</strong></td>
+                            <td>ENSG00000072778</td>
+                            <td class="shap-value">0.306429</td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="rank-badge">9</span></td>
+                            <td><strong>SEC31B</strong></td>
+                            <td>ENSG00000075826</td>
+                            <td class="shap-value">0.265972</td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="rank-badge">10</span></td>
+                            <td><strong>EIF2AK1</strong></td>
+                            <td>ENSG00000086232</td>
+                            <td class="shap-value">0.243875</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <p class="candidate-note">
+                Ranking is based on mean absolute SHAP value from the current
+                XGBoost test-set analysis. SHAP importance indicates model
+                influence, not biological causation or clinical validity.
+            </p>
+
+        </section>
+
+
+</div>
+
+
+<footer>
+
+    Cancer Biomarker AI •
+    Machine Learning + Explainable AI
+
+</footer>
+
+
+
+<!-- =========================================
+     JAVASCRIPT
+     ========================================= -->
+
+<script>
+
+let shapChartInstance = null;
+
+/* =========================================
+   SELECTED FILE DISPLAY
+   ========================================= */
+
+function showSelectedFile() {
+    const fileInput = document.getElementById("fileInput");
+    const status = document.getElementById("fileStatus");
+
+    if (!fileInput || !status) return;
+
+    if (fileInput.files.length > 0) {
+        status.textContent = "✓ Selected: " + fileInput.files[0].name;
+        status.style.display = "block";
+    } else {
+        status.style.display = "none";
+    }
+}
+
+
+
+
+/* =========================================
+   ANALYZE SAMPLE
+   ========================================= */
+
+async function analyzeSample() {
+
+    const fileInput =
+        document.getElementById("fileInput");
+
+    const file =
+        fileInput.files[0];
+
+
+    if (!file) {
+
+        showError(
+            "Please select a CSV file first."
+        );
+
+        return;
+    }
+
+
+    /* Show loading */
+
+    document.getElementById("loading")
+        .style.display = "block";
+
+    document.getElementById("error")
+        .style.display = "none";
+
+
+    try {
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            "file",
+            file
+        );
+
+
+        const response =
+            await fetch(
+                "/predict",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (data.error) {
+
+            showError(
+                data.error
+            );
+
+            return;
+        }
+
+
+        displayResult(data);
+
+
+    }
+
+    catch (error) {
+
+        showError(
+            "Something went wrong while connecting to the server."
+        );
+
+        console.error(error);
+
+    }
+
+    finally {
+
+        document.getElementById("loading")
+            .style.display = "none";
+
+    }
+
+}
+
+
+
+/* =========================================
+   DISPLAY RESULT
+   ========================================= */
+
+function displayResult(data) {
+
+
+    document.getElementById(
+        "resultSection"
+    ).style.display = "block";
+
+
+    /* Prediction */
+
+    const prediction =
+        document.getElementById(
+            "prediction"
+        );
+
+
+    prediction.textContent =
+        data.prediction;
+
+
+    prediction.className =
+        "prediction-result " +
+        (
+            data.prediction === "CANCER"
+            ? "cancer-result"
+            : "normal-result"
+        );
+
+
+    /* Genes */
+
+    document.getElementById(
+        "genesUsed"
+    ).textContent =
+        data.genes_used;
+
+
+    /* Probabilities */
+
+    const cancerProbability =
+        data.cancer_probability;
+
+    const normalProbability =
+        data.normal_probability;
+
+
+    document.getElementById(
+        "cancerProbability"
+    ).textContent =
+        cancerProbability.toFixed(2) + "%";
+
+
+    document.getElementById(
+        "normalProbability"
+    ).textContent =
+        normalProbability.toFixed(2) + "%";
+
+
+    /* Probability bars */
+
+    document.getElementById(
+        "cancerBar"
+    ).style.width =
+        cancerProbability + "%";
+
+
+    document.getElementById(
+        "normalBar"
+    ).style.width =
+        normalProbability + "%";
+
+
+    /* SHAP table */
+
+    const tableBody =
+        document.getElementById(
+            "shapTableBody"
+        );
+
+
+    tableBody.innerHTML = "";
+
+
+    data.shap_genes.forEach(
+        gene => {
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const contributionClass =
+                gene.direction === "Cancer"
+                ? "cancer-text"
+                : "normal-text";
+
+
+            row.innerHTML = `
+
+                <td>
+                    <strong>
+                        ${gene.gene}
+                    </strong>
+
+                    <br>
+
+                    <small style="color:#8994a5">
+                        ${gene.ensembl_id}
+                    </small>
+
+                </td>
+
+                <td>
+                    ${gene.shap_value}
+                </td>
+
+                <td>
+                    ${gene.expression}
+                </td>
+
+                <td class="${contributionClass}">
+                    ${gene.direction}
+                </td>
+
+            `;
+
+
+            tableBody.appendChild(
+                row
+            );
+
+        }
+    );
+
+
+    /* SHAP chart */
+
+    createShapChart(
+        data.shap_genes
+    );
+
+    /* Detailed gene explanations */
+    renderGeneExplanations(
+        data.shap_genes
+    );
+
+
+    /* Scroll to result */
+
+    document.getElementById(
+        "resultSection"
+    ).scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+
+
+
+/* =========================================
+   DETAILED GENE EXPLANATIONS
+   ========================================= */
+
+function renderGeneExplanations(genes) {
+
+    const container = document.getElementById("geneExplanationGrid");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    genes.forEach(gene => {
+
+        const direction = gene.direction || "Neutral";
+        const directionClass =
+            direction === "Toward Cancer" ? "cancer" :
+            direction === "Toward Normal" ? "normal" : "neutral";
+
+        const card = document.createElement("div");
+        card.className = "gene-explanation-card";
+
+        card.innerHTML = `
+            <div class="gene-explanation-header">
+                <div>
+                    <div class="gene-title">${escapeHtml(gene.gene)}</div>
+                    <div class="gene-id">${escapeHtml(gene.ensembl_id)}</div>
+                </div>
+                <div class="gene-direction ${directionClass}">
+                    ${escapeHtml(gene.direction_icon || "→")} ${escapeHtml(direction)}
+                </div>
+            </div>
+
+            <div class="gene-metrics">
+                <div class="gene-metric">Expression: <strong>${formatNumber(gene.expression)}</strong></div>
+                <div class="gene-metric">SHAP: <strong>${formatSigned(gene.shap_value)}</strong></div>
+                <div class="gene-metric">Strength: <strong>${escapeHtml(gene.strength || "-")}</strong></div>
+                <div class="gene-metric">Rank: <strong>#${escapeHtml(gene.rank)}</strong></div>
+            </div>
+
+            <div class="explanation-blocks">
+                <div class="explanation-block">
+                    <strong>🔧 Technical ML Explanation</strong>
+                    <p>${escapeHtml(gene.technical_explanation || "No technical explanation available.")}</p>
+                </div>
+
+                <div class="explanation-block">
+                    <strong>🧪 Biological Function</strong>
+                    <p>${escapeHtml(gene.biological_function || "No biological information available.")}</p>
+                </div>
+
+                <div class="explanation-block">
+                    <strong>🔬 Cancer Research Context</strong>
+                    <p>${escapeHtml(gene.research_context || "No research context available.")}</p>
+                </div>
+            </div>
+
+            <div class="biomarker-note">
+                ⚠️ <strong>Interpretation:</strong>
+                ${escapeHtml(gene.interpretation || "Model importance does not establish causation or clinical validity.")}
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+
+function formatNumber(value) {
+    const number = Number(value);
+    return Number.isFinite(number) ? number.toFixed(6) : "-";
+}
+
+
+function formatSigned(value) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return "-";
+    return (number >= 0 ? "+" : "") + number.toFixed(6);
+}
+
+
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =========================================
+   SHAP CHART
+   ========================================= */
+
+function createShapChart(
+    genes
+) {
+
+
+    const labels =
+        genes.map(
+            gene => gene.gene
+        );
+
+
+    const values =
+        genes.map(
+            gene => gene.shap_value
+        );
+
+
+    if (shapChartInstance) {
+
+        shapChartInstance.destroy();
+
+    }
+
+
+    const ctx =
+        document
+            .getElementById(
+                "shapChart"
+            )
+            .getContext("2d");
+
+
+    shapChartInstance =
+        new Chart(
+            ctx,
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels: labels,
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "SHAP Value",
+
+                            data: values
+
+                        }
+
+                    ]
+
+                },
+
+
+                options: {
+
+                    indexAxis: "y",
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        },
+
+                        title: {
+
+                            display: true,
+
+                            text:
+                                "Top 10 SHAP Feature Contributions",
+
+                            font: {
+                                size: 15
+                            }
+
+                        }
+
+                    },
+
+
+                    scales: {
+
+                        x: {
+
+                            title: {
+
+                                display: true,
+
+                                text:
+                                    "SHAP Value"
+
+                            }
+
+                        },
+
+                        y: {
+
+                            title: {
+
+                                display: true,
+
+                                text:
+                                    "Gene"
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+}
+
+
+
+/* =========================================
+   ERROR
+   ========================================= */
+
+function showError(
+    message
+) {
+
+    const errorBox =
+        document.getElementById(
+            "error"
+        );
+
+
+    errorBox.textContent =
+        "⚠️ " + message;
+
+
+    errorBox.style.display =
+        "block";
+
+}
+
+</script>
+
+
+</body>
+
+</html>
